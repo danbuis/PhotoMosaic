@@ -55,11 +55,19 @@ public Color[][] generateColorArray(BufferedImage baseImage, int rowsOfBlocks, i
 				for (int blockY = top; blockY<bottom; blockY++){
 					
 					//process each pixel
-					 int clr = image.getRGB(blockX, blockY);
-					 redSum += (clr & 0x00ff0000) >> 16;
-					 greenSum += (clr & 0x0000ff00) >> 8;
-					 blueSum += clr & 0x000000ff;
-					 count++;
+					int clr = image.getRGB(blockX, blockY);
+					Color pixelColor = new Color(clr, true);
+					 
+					
+					redSum+=pixelColor.getRed();
+					
+					
+					greenSum+=pixelColor.getGreen();
+					
+				
+					blueSum+=pixelColor.getBlue();
+					
+					count++;
 					 
 				} //end blockY
 			}//end blockX
@@ -68,12 +76,51 @@ public Color[][] generateColorArray(BufferedImage baseImage, int rowsOfBlocks, i
 			//in array
 			
 			returnArray[x][y]=new Color(redSum/count, greenSum/count, blueSum/count);
+			System.out.println(returnArray[x][y]);
 			
 			
 		} //end y loop
 	} //end x loop
 	
 	return returnArray;
+}
+
+
+/**
+ * equation taken from wikipedia.  Light-weight equation that accounts for difference in color perception,
+ * ie that a smaller change in red is percieved equivalent to a larger change in blue
+ * 
+ * @param firstColor
+ * @param secondColor
+ * @return
+ */
+public double colorDistance (Color firstColor, Color secondColor){
+	double distance = 0.0;
+	
+	int firstRed = firstColor.getRed();
+	int secondRed = secondColor.getRed();
+	
+	int firstGreen = firstColor.getGreen();
+	int secondGreen = secondColor.getGreen();
+	
+	int firstBlue = firstColor.getBlue();
+	int secondBlue = secondColor.getBlue();
+	
+	double averageRed = (firstRed+secondRed)/2.0;
+	int deltaRed = firstRed-secondRed;
+	int deltaGreen = firstGreen-secondGreen;
+	int deltaBlue = firstBlue-secondBlue;
+	
+	double redComponent = (2+averageRed/256)*deltaRed*deltaRed;
+	
+	double greenComponent = 4*deltaGreen*deltaGreen;
+	
+	double blueComponent = (2+(255-averageRed)/256)*deltaBlue*deltaBlue;
+	
+	distance = Math.sqrt(redComponent+blueComponent+greenComponent);
+	
+	return distance;
+	
 }
 
 }
