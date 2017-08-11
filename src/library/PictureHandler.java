@@ -19,12 +19,12 @@ public class PictureHandler {
 	 * @param endTileHeight - target height
 	 * @return
 	 */
-	public BufferedImage scaleImage(BufferedImage image, int endTileWidth, int endTileHeight){
+	public static BufferedImage scaleImage(BufferedImage image, int endTileWidth, int endTileHeight){
 		BufferedImage returnImage = Scalr.resize(image, endTileWidth, endTileHeight);
 		return returnImage;
 	}
 	
-	public BufferedImage cropImage (BufferedImage image, int endTileWidth, int endTileHeight){
+	public static BufferedImage cropImage (BufferedImage image, int endTileWidth, int endTileHeight){
 		BufferedImage croppedImage;
 		
 		double currentAspectRatio = ((double)(image.getWidth()))/image.getHeight();
@@ -53,10 +53,10 @@ public class PictureHandler {
 		return croppedImage;
 	}
 	
-	public BufferedImage prepareTile(BufferedImage inputImage, int targetWidth, int targetHeight){
-		BufferedImage croppedImage = this.cropImage(inputImage, targetWidth, targetHeight);
+	public static BufferedImage prepareTile(BufferedImage inputImage, int targetWidth, int targetHeight){
+		BufferedImage croppedImage = cropImage(inputImage, targetWidth, targetHeight);
 		
-		return this.scaleImage(croppedImage, targetWidth, targetHeight);
+		return scaleImage(croppedImage, targetWidth, targetHeight);
 		
 	}
 

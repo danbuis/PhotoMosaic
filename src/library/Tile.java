@@ -33,8 +33,12 @@ public Color[][] generateColorArray(BufferedImage baseImage, int rowsOfBlocks, i
 	int imageHeight=baseImage.getHeight();
 	int imageWidth =baseImage.getWidth();
 	
-	int blockHeight = imageHeight/rowsOfBlocks;
-	int blockWidth = imageWidth/colsOfBlocks;
+	int blockHeight = imageHeight;
+	//protect against accidental div by 0
+	if(rowsOfBlocks>0){blockHeight/=rowsOfBlocks;}
+	
+	int blockWidth = imageWidth;
+	if(colsOfBlocks>0){blockWidth/=colsOfBlocks;}
 	
 	//iterate over blocks
 	for (int x=0; x< colsOfBlocks; x++){
@@ -76,7 +80,7 @@ public Color[][] generateColorArray(BufferedImage baseImage, int rowsOfBlocks, i
 			//in array
 			
 			returnArray[x][y]=new Color(redSum/count, greenSum/count, blueSum/count);
-			System.out.println(returnArray[x][y]);
+			//System.out.println(returnArray[x][y]);
 			
 			
 		} //end y loop
