@@ -127,4 +127,16 @@ public double colorDistance (Color firstColor, Color secondColor){
 	
 }
 
+public double totalColorDistance(Color[][] outsideColorArray){
+	double returnDouble = 0.0;
+	
+	for (int colorDistX=0; colorDistX<colsOfBlocks; colorDistX++){
+		for(int colorDistY=0; colorDistY<rowsOfBlocks; colorDistY++){
+			returnDouble+= this.colorDistance(colorArray[colorDistX][colorDistY], outsideColorArray[colorDistX][colorDistY]);
+		}
+	}
+	
+	return returnDouble;
+}
+
 }

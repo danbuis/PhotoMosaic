@@ -1,6 +1,7 @@
 package library;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 
 import org.imgscalr.Scalr;
 
@@ -42,13 +43,26 @@ public class PictureHandler {
 			
 		}else{
 			//input is too tall, chop some off the top and bottom
-			double horizontalRatio = image.getWidth()/endTileWidth;
+			double horizontalRatio = (double)image.getWidth()/endTileWidth;
 			int targetHeight = (int)(endTileHeight*horizontalRatio);
 			
 			int totalCroppedHeight = image.getHeight()-targetHeight;
 			
-			croppedImage = image.getSubimage(0, totalCroppedHeight/2, image.getWidth(), totalCroppedHeight);
-		}
+			croppedImage = null;
+			try{
+				croppedImage = image.getSubimage(0, totalCroppedHeight/2, image.getWidth(), targetHeight);
+			}catch(RasterFormatException e){
+				e.printStackTrace();
+				System.out.println("targetHeight="+targetHeight);
+				System.out.println("totalCroppedHeight="+totalCroppedHeight);
+				System.out.println("endTileHeight="+endTileHeight);
+				System.out.println("endTileWidth="+endTileWidth);
+				System.out.println("ratio="+horizontalRatio);
+				System.out.println("image width="+image.getWidth());
+			
+			
+				}
+			}
 		
 		return croppedImage;
 	}
