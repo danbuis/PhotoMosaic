@@ -16,6 +16,7 @@ public class MosaicGenerator {
 	public int rowsInTile=3;
 	public int tileWidth=125;
 	public int tileHeight=75;
+	public int distanceBetweenSameTile=4;
 	
 	public MosaicGenerator(File rootDirectory, double colorAdjustmentFreedom){
 		tileList = buildTileList(tileList, rootDirectory, colorAdjustmentFreedom);
@@ -65,7 +66,7 @@ public class MosaicGenerator {
 				System.out.println("Completed file: "+file.getPath());
 				
 				if(temp!=null){
-					tileList.add(new Tile(temp, colorAdjustmentFreedom, this.rowsInTile, this.columnsInTile));
+					tileList.add(new Tile(temp, colorAdjustmentFreedom, this.rowsInTile, this.columnsInTile, file.getPath()));
 				}
 			}
 		}
@@ -89,6 +90,8 @@ public class MosaicGenerator {
 		int tilesWide = mosaicWidth/this.tileWidth;
 		int tilesHigh = mosaicHeight/this.tileHeight;
 		
+		Tile[][] tileGrid= new Tile[tilesWide][tilesHigh];
+		
 		System.out.println("tilesWide "+tilesWide);
 		System.out.println("tilesHigh "+tilesHigh);
 		
@@ -101,7 +104,7 @@ public class MosaicGenerator {
 		System.out.println("set up blank image");
 	
 		
-		Tile masterTile = new Tile(master, colorAdjustmentFreedom, mosaicHeight/25, mosaicWidth/25);
+		Tile masterTile = new Tile(master, colorAdjustmentFreedom, mosaicHeight/25, mosaicWidth/25, "");
 		Color[][] masterColors = masterTile.colorArray;
 		
 		//repeat for each tile in mosaic
@@ -153,7 +156,7 @@ public class MosaicGenerator {
 					// calculate total color distance
 					double colorDist=tile.totalColorDistance(tileColors);
 					
-					if(colorDist<closestDistance){
+					if(colorDist<closestDistance && noOtherSameTilesNearby(tileGrid, tile, x, y)){
 						closestTile = tile;
 						closestDistance = colorDist;
 					}
@@ -163,6 +166,10 @@ public class MosaicGenerator {
 				//stick in mosaic
 				
 				mosaicGraphics.drawImage(closestTile.image, null, initialX*25, initialY*25);
+				
+				//add to tileGrid
+				tileGrid[x][y]=closestTile;
+				
 				/*try{
 					ImageIO.write(mosaic, "jpg", new File("big/test"+x+"-"+y+".jpg"));
 				}catch (IOException e){
@@ -179,6 +186,66 @@ public class MosaicGenerator {
 		
 		return mosaic;
 		
+	}
+
+
+	private boolean noOtherSameTilesNearby(Tile[][] tileGrid, Tile tile, int x, int y) {
+		
+		int range=this.distanceBetweenSameTile;
+		String baseTileFile = tile.file;
+		System.out.println("checking this tile: "+baseTileFile);
+		
+		//first check same column, working upwards
+		for(int i = 1; i<range;i++){
+			//if this is in the array and it is the same tile
+			System.out.println("i:"+i);
+			System.out.println("x:"+x);
+			System.out.println("y:"+y);
+			if (y-i>=0){
+				String fileTemp = tileGrid[x][y-i].file;
+				System.out.println("against: "+fileTemp+ " i-"+i);
+				
+				if(baseTileFile.equals(fileTemp)){
+					
+					
+					//repeat tile found
+					System.out.println("repeat tile found");
+					return false;
+				}
+				
+			}
+		}
+		
+		//then check each column left for repeats
+		for(int i=1; i<range;i++){
+			//if the column exists
+			if(x-i>=0){
+				
+				//traverse row
+				for (int k=(0-range); k<range; k++){
+					if(y+k>=0 && y+k<=tileGrid[0].length){
+						String fileTemp = null;
+
+						System.out.println("looking at ("+(x-i)+","+(y+k)+")");
+						System.out.println("x length:"+tileGrid.length);
+						System.out.println("y length:"+tileGrid[0].length);
+							fileTemp = tileGrid[x-i][y+k].file;
+						
+						
+						if(fileTemp!=null && baseTileFile.equals(fileTemp)){
+							
+							
+							//repeat tile found
+							System.out.println("repeat tile found");
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		//no repeat found
+		return true;
 	}
 
 }

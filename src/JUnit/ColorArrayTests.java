@@ -27,14 +27,15 @@ public class ColorArrayTests {
 	@Test
 	public void testTimeForLargePicture() {
 		BufferedImage testImage = null;
+		String fileName = "image_repo/Test/reallyLargeTest.png";
 		try{
-			testImage = ImageIO.read(new File("image_repo/Test/reallyLargeTest.png"));
+			testImage = ImageIO.read(new File(fileName));
 		}catch (IOException e){
 			System.out.println("Very large image not found");
 			e.printStackTrace();
 		}
 		
-		Tile resultTile = new Tile(testImage, 10, 10);
+		Tile resultTile = new Tile(testImage, 10, 10, fileName);
 		
 		//trivial assertion just to make sure that the process runs at all.
 		//process
@@ -63,20 +64,20 @@ public class ColorArrayTests {
 		}
 		
 		//test two solid colors
-		Tile redTile = new Tile(testRed,1,1);
+		Tile redTile = new Tile(testRed,1,1, "image_repo/Test/testBlocksRed.jpg");
 		
 		assertEquals(sortOfRed, redTile.colorArray[0][0]);
 		
-		Tile blackTile = new Tile(testBlack,1,1);
+		Tile blackTile = new Tile(testBlack,1,1,"image_repo/Test/testBlocksBlack.jpg");
 		assertEquals(Color.BLACK, blackTile.colorArray[0][0]);
 		
 		//test a few different block sizes
-		Tile redTile2 = new Tile(testRed,2,2);
+		Tile redTile2 = new Tile(testRed,2,2,"image_repo/Test/testBlocksRed.jpg");
 		assertEquals(sortOfRed, redTile2.colorArray[0][0]);
 		assertEquals(sortOfRed, redTile2.colorArray[0][1]);
 		assertEquals(sortOfRed, redTile2.colorArray[1][1]);
 		
-		Tile redTile3 = new Tile(testRed,3,3);
+		Tile redTile3 = new Tile(testRed,3,3,"image_repo/Test/testBlocksRed.jpg");
 		assertEquals(sortOfRed, redTile3.colorArray[0][0]);
 		assertEquals(sortOfRed, redTile3.colorArray[2][1]);
 		assertEquals(sortOfRed, redTile3.colorArray[2][2]);
@@ -101,7 +102,7 @@ public class ColorArrayTests {
 		//delta of 2 allows for a difference of 1-2 in any of the RGB values.  needed due to artifacts from image saving.
 		//its been hard to get pure colors to translate from image editor to the Color info in BufferedImage.  a difference of 
 		//2 is not visible to the human eye.
-		Tile tile5x5 = new Tile(test5x5,2,2);
+		Tile tile5x5 = new Tile(test5x5,2,2,"image_repo/Test/testBlocks 5x5.gif");
 		assertEquals(tile5x5.colorDistance(Color.BLACK, tile5x5.colorArray[0][0]),0,2);
 		assertEquals(tile5x5.colorDistance(sortOfRed, tile5x5.colorArray[0][1]),0,2);
 		assertEquals(tile5x5.colorDistance(sortOfRed, tile5x5.colorArray[1][0]),0,2);
@@ -115,7 +116,7 @@ public class ColorArrayTests {
 			e.printStackTrace();
 		}
 		
-		Tile tile6x6 = new Tile(test6x6,2,2);
+		Tile tile6x6 = new Tile(test6x6,2,2,"image_repo/Test/testBlocks 6x6.jpg");
 		
 		assertEquals(0,tile6x6.colorDistance(sortOfRed, tile6x6.colorArray[0][0]),2);
 		assertEquals(0,tile6x6.colorDistance(Color.BLACK, tile6x6.colorArray[0][1]),2);
@@ -131,7 +132,7 @@ public class ColorArrayTests {
 			e.printStackTrace();
 		}
 		
-		Tile tileUneven = new Tile(testUneven,4,2);
+		Tile tileUneven = new Tile(testUneven,4,2,"image_repo/Test/testBlocks 3x6.gif");
 		
 		assertEquals(0,tileUneven.colorDistance(sortOfRed, tileUneven.colorArray[0][0]),2);
 		assertEquals(0,tileUneven.colorDistance(Color.BLACK, tileUneven.colorArray[1][0]),2);

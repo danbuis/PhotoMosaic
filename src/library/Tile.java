@@ -9,20 +9,22 @@ public class Tile {
 	double colorAdjustmentFreedom = 0.0;
 	int rowsOfBlocks=1;
 	int colsOfBlocks=1;
+	public String file;
 	
 	public Color[][] colorArray;
 
-	public Tile(BufferedImage baseImage, double colorAdjustmentFreedom, int rowsOfBlocks, int colsOfBlocks) {
+	public Tile(BufferedImage baseImage, double colorAdjustmentFreedom, int rowsOfBlocks, int colsOfBlocks, String file) {
 		this.image = baseImage;
 		this.rowsOfBlocks = rowsOfBlocks;
 		this.colsOfBlocks=colsOfBlocks;
 		this.colorAdjustmentFreedom=colorAdjustmentFreedom;
+		this.file=file;
 		
 		colorArray = generateColorArray(baseImage, rowsOfBlocks, colsOfBlocks);
 	}
 	
-public Tile(BufferedImage baseImage, int rowsOfBlocks, int colsOfBlocks) {
-		this(baseImage, 0.0, rowsOfBlocks, colsOfBlocks);
+public Tile(BufferedImage baseImage, int rowsOfBlocks, int colsOfBlocks, String file) {
+		this(baseImage, 0.0, rowsOfBlocks, colsOfBlocks, file);
 
 	}
 
