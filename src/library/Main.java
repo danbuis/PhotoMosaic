@@ -8,11 +8,11 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		
 		testMosaic();
 
-	}
+	}*/
 	
 	public static void testMosaic(){
 		File testFolder = new File("image_repo");
