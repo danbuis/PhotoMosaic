@@ -195,55 +195,33 @@ public class MosaicGenerator {
 		String baseTileFile = tile.file;
 		System.out.println("checking this tile: "+baseTileFile);
 		
-		//first check same column, working upwards
-		for(int i = 1; i<range;i++){
-			//if this is in the array and it is the same tile
-			System.out.println("i:"+i);
-			System.out.println("x:"+x);
-			System.out.println("y:"+y);
-			if (y-i>=0){
-				String fileTemp = tileGrid[x][y-i].file;
-				System.out.println("against: "+fileTemp+ " i-"+i);
-				
-				if(baseTileFile.equals(fileTemp)){
-					
-					
-					//repeat tile found
-					System.out.println("repeat tile found");
-					return false;
-				}
-				
-			}
-		}
+		//dims of tileGrid
+		int width=tileGrid.length;
+		int height = tileGrid[1].length;
 		
-		//then check each column left for repeats
-		for(int i=1; i<range;i++){
-			//if the column exists
-			if(x-i>=0){
+		for(int i=x-range; i<x+range; i++){
+			for(int j=y-range; j<y+range; j++){
 				
-				//traverse row
-				for (int k=(0-range); k<range; k++){
-					if(y+k>=0 && y+k<=tileGrid[0].length){
-						String fileTemp = null;
-
-						System.out.println("looking at ("+(x-i)+","+(y+k)+")");
-						System.out.println("x length:"+tileGrid.length);
-						System.out.println("y length:"+tileGrid[0].length);
-							fileTemp = tileGrid[x-i][y+k].file;
+				//make sure that i and j are positive
+				if(i >= 0 && j >= 0){
+					//make sure that the value falls within the height and width
+					if(i < width && j < height){
 						
-						
-						if(fileTemp!=null && baseTileFile.equals(fileTemp)){
+						//at this point the tile in question falls within the tileGrid
+						//make sure it has an object before we try to compare it
+						if(tileGrid[i][j]!=null){
 							
-							
-							//repeat tile found
-							System.out.println("repeat tile found");
-							return false;
+							//compare
+							if(tileGrid[i][j].equals(tile)){
+								//they are the same
+								return false;
+							}
 						}
 					}
 				}
 			}
 		}
-
+		
 		//no repeat found
 		return true;
 	}

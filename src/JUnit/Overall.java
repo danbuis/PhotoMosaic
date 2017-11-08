@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import org.junit.Test;
 
 import library.MosaicGenerator;
+import library.Tile;
 
 public class Overall {
 
@@ -47,6 +48,14 @@ public class Overall {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void testArraydims(){
+		Tile[][] test = new Tile[3][50];
+		
+		assertEquals(3, test.length);
+		assertEquals(50, test[1].length);
 	}
 
 }
