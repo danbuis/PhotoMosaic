@@ -27,7 +27,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.println("beginning test mosaic");
-		BufferedImage resultMosaic = gen.mosaicify(masterImage, testFolder, 0.0, 6000, 4245);
+		BufferedImage resultMosaic = gen.mosaicify(masterImage, 0.0, 6000, 4245);
 		
 		try {
 			ImageIO.write(resultMosaic, "jpg", new File("big/dragonResult.jpg"));

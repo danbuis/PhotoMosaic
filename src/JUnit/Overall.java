@@ -40,7 +40,7 @@ public class Overall {
 			e.printStackTrace();
 		}
 		System.out.println("beginning test mosaic");
-		BufferedImage resultMosaic = gen.mosaicify(masterImage, testFolder, 0.0, 5400,2700);
+		BufferedImage resultMosaic = gen.mosaicify(masterImage,  0.0, 5400,2700);
 		
 		try {
 			ImageIO.write(resultMosaic, "png", new File("big/testResult.png"));

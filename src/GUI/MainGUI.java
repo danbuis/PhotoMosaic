@@ -12,6 +12,9 @@ public class MainGUI {
 
 	static MosaicGenerator generator;
 	static JFrame frame;
+	static public InputPanel inputPanel;
+	static public SourcePanel sourcePanel;
+	static public JPanel outputPanel;
 	
 	public static void main(String[] args){
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -33,11 +36,18 @@ private static void createAndShowGUI() {
 	
 	//set up main container
 	JPanel containerPanel = new JPanel();
-	containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.X_AXIS));
+	containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
     frame.add(containerPanel);
     
-    JPanel inputPanel = new InputPanel(generator, frame);
+    //add inputs
+    inputPanel = new InputPanel(generator);
     containerPanel.add(inputPanel);
+    
+    sourcePanel = new SourcePanel(inputPanel);
+    containerPanel.add(sourcePanel);
+    
+    outputPanel = new OutputPanel(sourcePanel, inputPanel);
+    containerPanel.add(outputPanel);
     
     //display window
     frame.pack();

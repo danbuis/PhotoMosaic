@@ -74,7 +74,7 @@ public class MosaicGenerator {
 		return tileList;
 	}
 	
-	public BufferedImage mosaicify(BufferedImage masterImage, File rootDirectory, double colorAdjustmentFreedom, int targetWidth, int targetHeight){
+	public BufferedImage mosaicify(BufferedImage masterImage, double colorAdjustmentFreedom, int targetWidth, int targetHeight){
 		BufferedImage mosaic = null;
 		
 		//determine dimensions of final image
@@ -193,7 +193,7 @@ public class MosaicGenerator {
 		
 		int range=this.distanceBetweenSameTile;
 		String baseTileFile = tile.file;
-		System.out.println("checking this tile: "+baseTileFile);
+		//System.out.println("checking this tile: "+baseTileFile);
 		
 		//dims of tileGrid
 		int width=tileGrid.length;

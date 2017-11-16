@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import library.MosaicGenerator;
 
@@ -21,19 +22,21 @@ public class InputPanel extends JPanel {
 	
 	private JButton selectInputDirButton;
 	private JButton processImagesButton;
-	private JLabel repoLocationLabel = new JLabel("");
+	private JTextField repoLocationField = new JTextField("");
 	
-	private String inputDir;
+	public File inputDir;
+	public Boolean inputSelected=false;
 	
-	public InputPanel(MosaicGenerator generator, JFrame frame) {
-		this.frame = frame;
+	public InputPanel(MosaicGenerator generator) {
+
 		this.generator = generator;
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		createInputs();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JLabel Repolabel = new JLabel ("Selected image repository :");
 		this.add(Repolabel);
-		this.add(repoLocationLabel);
+		
+		this.add(repoLocationField);
 	}
 
 	private void createInputs() {
@@ -49,7 +52,7 @@ public class InputPanel extends JPanel {
 		this.add(selectInputDirButton);
 		
 		processImagesButton = new JButton("Prepare image tiles");
-		if(inputDir!=null){
+	
 			processImagesButton.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e){
@@ -58,24 +61,34 @@ public class InputPanel extends JPanel {
 					System.out.println("processed images");
 				}
 			});
-		}
+		
+		
 		this.add(processImagesButton);
 		
 	}
 	
 	private void clickProcessImages(){
-		generator = new MosaicGenerator(new File(inputDir), 0);
+		if(inputDir !=null){
+			System.out.println("processing images");
+			generator = new MosaicGenerator(inputDir, 0);
+		} else System.out.println("inputDir = null");
+		
 	}
 	
 	private void clickImageRepoButton() {
 		 JFileChooser chooser = new JFileChooser();
-           chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+           chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
            chooser.setAcceptAllFileFilterUsed(false);
            
+           if (inputDir != null){
+        	   chooser.setCurrentDirectory(inputDir);
+           }
+           
            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-           	inputDir = chooser.getCurrentDirectory().toString();
+           	inputDir = chooser.getSelectedFile();
            	System.out.println(inputDir);
-           	this.repoLocationLabel.setText(inputDir);
+           	this.repoLocationField.setText(inputDir.getAbsolutePath());
+           	this.inputSelected=true;
            }
 		
 	}
